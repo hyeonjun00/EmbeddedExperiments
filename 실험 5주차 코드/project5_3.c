@@ -121,7 +121,7 @@ void Seg_out(int number){
 	num0= number%10;
 
 
-	// 1000자리수 출력
+	// 1000??? ??
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num3];
@@ -129,7 +129,7 @@ void Seg_out(int number){
 	PTD->PCOR = 0xfff;
 	j++;
 
-	// 100자리수 출력
+	// 100??? ??
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num2];
@@ -137,7 +137,7 @@ void Seg_out(int number){
 	    PTD->PCOR = 0xfff;
 	j++;
 
-	// 10자리수 출력
+	// 10??? ??
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num1];
@@ -145,7 +145,7 @@ void Seg_out(int number){
    PTD->PCOR = 0xfff;
 	j++;
 
-	// 1자리수 출력
+	// 1??? ??
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num0];
@@ -205,14 +205,14 @@ int main(void)
       buffer[3] = buffer[2];
 		buffer[2] = buffer[1];
 		buffer[1] = buffer[0];
-		buffer[count] = key;
+		buffer[0] = key;
 	 	DisplayValue = buffer[3]*1000 + buffer[2]*100 + buffer[1]*10 + buffer[0];
     	Seg_out(DisplayValue);
 	  	delay_us(1000000);
 	}
 
 	 else{
-	 	value = buffer[3]*1000 + buffer[2]*100 + buffer[1]*10 + buffer[0];
+	 	DisplayValue = buffer[3]*1000 + buffer[2]*100 + buffer[1]*10 + buffer[0];
     	Seg_out(DisplayValue);
 	}
 

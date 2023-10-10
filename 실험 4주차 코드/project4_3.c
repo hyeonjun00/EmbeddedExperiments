@@ -219,8 +219,6 @@ int main(void)
 
         }else{
             Seg_out(count1);
-
-        }
-
+         }
    }
 }

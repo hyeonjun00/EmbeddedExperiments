@@ -235,8 +235,6 @@ int main(void)
    NormalRUNmode_80MHz();  /* Init clocks: 80 MHz sysclk & core, 40 MHz bus, 20 MHz flash */
 
    while(1){
-
       Seg_out(count);
-
    }
 }

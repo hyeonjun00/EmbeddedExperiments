@@ -244,16 +244,14 @@ int main(void)
 
    while(1){
       if(PTC->PDIR &(1<<3)){   
-            count++;
-            Seg_out(count);
-            
-            if (count >= 10000){
-                count = 0;
+         count++;
+         Seg_out(count);
+         if (count >= 10000){
+               count = 0;
             }
 			}else{
 				count = 0000;
 				Seg_out(count);
          }
-         
    }
  }

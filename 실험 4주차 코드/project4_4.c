@@ -243,7 +243,7 @@ int main(void)
    NormalRUNmode_80MHz();  /* Init clocks: 80 MHz sysclk & core, 40 MHz bus, 20 MHz flash */
 
    while(1){
-        if(PTC->PDIR &(1<<3)){   
+      if(PTC->PDIR &(1<<3)){   
             count++;
             Seg_out(count);
             

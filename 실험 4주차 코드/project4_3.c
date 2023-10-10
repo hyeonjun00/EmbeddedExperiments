@@ -214,20 +214,11 @@ int main(void)
 
    while(1){
         
-        if(PTD->PDIR &(1<<12)){   //7 segment와 led랑 햇갈리지 말자. 항상 high 상태인 세그먼트가 sw를 누르면 bjt가 on 되면서 ground와 연결된 path가 활성화 되어 0V의 상태가 된다. 즉 sw누르지 않았을때 조건 성립
+        if(PTD->PDIR &(1<<12)){  
             Seg_out(count);
 
-
-         /* if문의 조건을 sw를 켰을때 만족하게 하려면 
-         if(PTD->PDIR ^(1<<12)){
-            ~~
-         }
-         
-         
-         */
-        
         }else{
-            seg_out(count1);
+            Seg_out(count1);
 
         }
 

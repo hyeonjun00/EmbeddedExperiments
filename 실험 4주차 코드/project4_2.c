@@ -180,15 +180,13 @@ void Seg_out(int number){
    int j;
    int d1000, d100, d10, d1;
 
-										
-                    d1000 = number % 10000/1000;
+						  d1000 = number % 10000/1000;
 						  d100 = number % 1000/100;
 						  d10 = number % 100/10;
-                    d1 = number % 10;
+              d1 = number % 10;
 
                            for( j = 0 ; j < 10 ; j++){
 
-                        
                         //1000
                         num(d1000);
                         PTD-> PCOR |= 1<<10;
@@ -204,8 +202,6 @@ void Seg_out(int number){
                         PTD-> PSOR |= 1<<12;
                         PTD-> PCOR |= 1<<16;
                         delay_ms(2);
-                        
-                        
                         
                         //10
                         num(d10);

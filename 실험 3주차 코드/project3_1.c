@@ -1,84 +1,58 @@
-#include "device_registers.h"
-#include "clocks_and_modes.h"
-int lpit0_ch0_flag_counter = 0; 
-
-void PORT_init (void)
-{	  
-          PCC->PCCn[PCC_PORTC_INDEX ]|=PCC_PCCn_CGC_MASK;	
-	  PCC->PCCn[PCC_PORTD_INDEX ]|=PCC_PCCn_CGC_MASK;   /* Enable clock for PORTD */
-	  
-
-          PTC->PDDR &= 0xFF07;   		/* 1111 1111 0000 0111, Port C3,4,5,6,7:  Data Direction = input*/  
-	  PORTC->PCR[3]  = PORT_PCR_MUX(1);	/* Port C3: MUX = GPIO  */
-	  PORTC->PCR[4]  = PORT_PCR_MUX(1);	
-	  PORTC->PCR[5]  = PORT_PCR_MUX(1);
-          PORTC->PCR[6]  = PORT_PCR_MUX(1);
-	  PORTC->PCR[7]  = PORT_PCR_MUX(1);
-
-
-
- 
-          PTD->PDDR |= 0x001F;			/* Port D0,1,2,3,5:  Data Direction = output */
-	  PORTD->PCR[0]  = PORT_PCR_MUX(1);	/* Port D0: MUX = GPIO  */
-	  PORTD->PCR[1]  = PORT_PCR_MUX(1);	
-	  PORTD->PCR[2]  = PORT_PCR_MUX(1);
-          PORTD->PCR[3]  = PORT_PCR_MUX(1);
-	  PORTD->PCR[5]  = PORT_PCR_MUX(1);
-		
-
-}
-void WDOG_disable (void)
-{
-  WDOG->CNT=0xD928C520;     /* Unlock watchdog */
-  WDOG->TOVAL=0x0000FFFF;   /* Maximum timeout value */
-  WDOG->CS = 0x00002100;    /* Disable watchdog*/
-}
-
-void LPIT0_init (uint32_t delay)
-{
-   uint32_t timeout;
-
-  PCC->PCCn[PCC_LPIT_INDEX] = PCC_PCCn_PCS(6);    /* Clock Src = 6 (SPLL2_DIV2_CLK)*/
-  PCC->PCCn[PCC_LPIT_INDEX] |= PCC_PCCn_CGC_MASK; /* Enable clk to LPIT0 regs */
-
- 
-  LPIT0->MCR |= LPIT_MCR_M_CEN_MASK; 
-  timeout=delay* 40000;
-  LPIT0->TMR[0].TVAL = timeout;      
-  LPIT0->TMR[0].TCTRL |= LPIT_TMR_TCTRL_T_EN_MASK;
-                                   
-}
-
-void delay_ms (volatile int ms){
-   LPIT0_init(ms);           /* Initialize PIT0 for 1 second timeout  */
-   while (0 == (LPIT0->MSR & LPIT_MSR_TIF0_MASK)) {} /* Wait for LPIT0 CH0 Flag */
-               lpit0_ch0_flag_counter++;         /* Increment LPIT0 timeout counter */
-               LPIT0->MSR |= LPIT_MSR_TIF0_MASK; /* Clear LPIT0 timer flag 0 */
-}
-
-int main(void)
-{
-
-	WDOG_disable();/* Disable Watchdog in case it is not done in startup code */
-	PORT_init();            /* Configure ports */
-	SOSC_init_8MHz();       /* Initialize system oscilator for 8 MHz xtal */
-	SPLL_init_160MHz();     /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
-	NormalRUNmode_80MHz();  /* Init clocks: 80 MHz sysclk & core, 40 MHz bus, 20 MHz flash */
-		while(1) {
-				PTD->PSOR|=0x001F; //every pin setting
-				if(PTC->PDIR & (1 << 3)) {
-					PTD->PCOR |= 1 << 0;
-				} else if(PTC->PDIR & (1 << 4)) { 
-						PTD->PCOR |= 1 << 1; 
-				} else if(PTC->PDIR & (1 << 5)) { 
-						PTD->PCOR |= 1 << 2;
-				} else if(PTC->PDIR & (1 << 6)) { 
-						PTD->PCOR |= 1 << 3; 
-				} else if(PTC->PDIR & (1 << 7)) { 
-						PTD->PCOR |= 1 << 5; 
-				} else{ PTD->PSOR|=0x001F; 			//every pin setting
-				
-				}
-		}
-}
-
+PORTC_PCR_BASE EQU 0x4004B000
+PORTD_PCR_BASE EQU 0x4004C000
+PCR_C12 EQU 0x4004B000+0x30 ;12*4
+PCR_D0 EQU 0x4004C000
+	
+GPIOA EQU 0x400FF000
+GPIOB EQU 0x400FF040
+GPIOC EQU 0x400FF080
+GPIOD EQU 0x400FF0C0
+PDDR_C EQU 0x400FF080+0x14
+PDDR_D EQU 0x400FF0C0+0x14
+PIDR_C EQU 0x400FF080+0x18
+	
+PCC_BASE EQU 0x40065000
+PCC_PORTC EQU 0x40065000+0x12C
+PCC_PORTD EQU 0x40065000+0x130
+CLOCK_EN EQU 0x40000000 ; In S32K14x, GPIO can only be accessed by the core through the cross bar interface at 0x400F_F00
+	
+	AREA mycode, CODE
+	ENTRY
+	EXPORT __main
+__main
+	LDR r0,=PDDR_C ; GPIO Controller, Port C Port Data Diretion Setting , PDDR offset 14h , PortC Base 400FFF080, Portc Diretion 
+	LDR r1,=PCC_PORTC ; PCC_PORTC Registor= 12C, PCC Base address Portc Clock = 4006_5000h
+	LDR r2,=CLOCK_EN ;  In S32K14x, GPIO can only be accessed by the core through the cross bar interface at 0x400F_F00
+	
+	STR r2,[r1,#0x00] ; PCC Clock Setting C, r2? [r1? ??? ?? + #0x00]? ?? ??? ??
+	STR r2,[r1,#0x04] ; PCC Clock Setting D r2? [r1? ??? ?? + #0x04]? ?? ??? ??
+	
+	LDR           r1,[r0,#0x00] ; r1= contents of [PDDR_C]
+	BIC           r1,r1,#0x1000 ;C12 is configured as input  
+	STR           r1,[r0,#0x00] ; PDDR_C <-- 0x1000 D0 is input
+	
+	LDR			  r1,=PCR_C12 ; Pin control Registor, PORTC multiplexinh contol base 0x4004B000,  /* Port C12: MUX = GPIO, input filter enabled */
+	MOV           r2,#0x110 ; r2<--0x110 
+	STR           r2,[r1,#0x00] ; PCR_C12 is configured as GPIO&PFE
+	
+	LDR           r2,[r0,#0x40] ; r2= contents of [PDDR_D] 
+	ORR           r2,r2,#0x01 ; r2= 0x01
+	STR           r2,[r0,#0x40] ;PDDR_D0 is configured as output
+	
+	MOV           r2,#0x100 ; r2=0x100
+	LDR			  r1,=PCR_D0
+	STR           r2,[r1,#0x00] ; PCR_D0 is configured as GPIO
+	B             NOT_PUSH ; NOT PUSH Function?? ??
+ON_PUSH
+	LDR           r1,[r0,#0x34] ; r1 = contents of [PDDR_C + 0x34 = PCOR_D]
+	ORR			  r1,r1,#0x01 ; Clear D0
+	STR           r1,[r0,#0x34] ;
+NOT_PUSH
+	LDR           r1,[r0,#-0x04] ; r1 = contents of [PDDR_C - 0x04 = PDIR_C], Read C12 DATA
+	LSLS          r1,r1,#19 ; Move C12 value to MSB
+	BMI           ON_PUSH ; MSB = 1?
+	LDR           r1,[r0,#0x30] ; r1 = contets of [PDDR_C + 0x30 = PSOR_D]
+	ORR           r1,r1,#0x01 ; Set D0 '1'
+	STR           r1,[r0,#0x30] ; 
+	B             NOT_PUSH
+	END

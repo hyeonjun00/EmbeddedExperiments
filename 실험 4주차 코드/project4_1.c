@@ -65,15 +65,15 @@ void PORT_init (void)
 void num (int nom){
 	/*
 	 	   A
-		ㅡㅡㅡㅡㅡ
+		   ㅡㅡㅡㅡㅡ
 	      ㅣ	    ㅣ
-	 F ㅣ	    ㅣB
-	      ㅣ    G  ㅣ
-	      ㅡㅡㅡㅡㅡㅡ
+	    F ㅣ	    ㅣB
+	      ㅣ    Gㅣ
+	      ㅡㅡㅡㅡㅡ
 	      ㅣ	    ㅣ
-	  Eㅣ	    ㅣC
+	     Eㅣ	    ㅣC
 	      ㅣ	    ㅣ
-	      ㅡㅡㅡㅡㅡㅡ    ㅇ DOT
+	      ㅡㅡㅡㅡㅡ   ㅇ DOT
 		   D
 	*/
    switch(nom){

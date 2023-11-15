@@ -58,7 +58,7 @@ void PORT_init (void)
      PORTD->PCR[7] = PORT_PCR_MUX(1); /* Port D7: MUX = GPIO */
 	
      // select display port, com3, com4, com5, com6
-     PTD->PDDR |=1<<10|1<<11; 				 /* Port D10-D11: Data Direction= output (default),  */
+     PTD->PDDR |=1<<10|1<<11|<<12|<<16; 				 /* Port D10-D11: Data Direction= output (default),  */
      PORTD->PCR[10] = PORT_PCR_MUX(1); /* Port D10: MUX = GPIO */
      PORTD->PCR[11] = PORT_PCR_MUX(1); /* Port D11: MUX = GPIO */
      PORTD->PCR[12] = PORT_PCR_MUX(1); /* Port D12: MUX = GPIO */

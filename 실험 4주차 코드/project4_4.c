@@ -191,45 +191,45 @@ void num (int nom){
 void Seg_out(int number){
    int j;
    int d1000, d100, d10, d1;
-		              d1000 = number % 10000/1000;
-						  d100 = number % 1000/100;
-						  d10 = number % 100/10;
-                    d1 = number % 10;
+   d1000 = number % 10000/1000;
+   d100 = number % 1000/100;
+   d10 = number % 100/10;
+   d1 = number % 10;
 
-                       for( j = 0 ; j < 10 ; j++){
+   for( j = 0 ; j < 10 ; j++){
 
-                        //1000자리수 출력
-                        num(d1000);
-                        PTD-> PSOR |= 1<<16;
-                        PTD-> PCOR |= 1<<15;
-                        PTD-> PCOR |= 1<<10;
-                        PTD-> PCOR |= 1<<11;
-                        delay_ms(2);
+   //1000자리수 출력
+   num(d1000);
+   PTD-> PSOR |= 1<<16;
+   PTD-> PCOR |= 1<<15;
+   PTD-> PCOR |= 1<<10;
+   PTD-> PCOR |= 1<<11;
+   delay_ms(2);
 
-                        //100자리수 출력
-                        num(d100);
-                        PTD-> PCOR |= 1<<16;
-                        PTD-> PSOR |= 1<<15;
-                        PTD-> PCOR |= 1<<10;
-                        PTD-> PCOR |= 1<<11;
-                        delay_ms(2);
+   //100자리수 출력
+   num(d100);
+   PTD-> PCOR |= 1<<16;
+   PTD-> PSOR |= 1<<15;
+   PTD-> PCOR |= 1<<10;
+   PTD-> PCOR |= 1<<11;
+   delay_ms(2);
 
-                        //10자리수 출력
-                        num(d10);
-                        PTD-> PCOR |= 1<<16;
-                        PTD-> PCOR |= 1<<15;
-                        PTD-> PSOR |= 1<<10;
-                        PTD-> PCOR |= 1<<11;
-                        delay_ms(2);
+   //10자리수 출력
+   num(d10);
+   PTD-> PCOR |= 1<<16;
+   PTD-> PCOR |= 1<<15;
+   PTD-> PSOR |= 1<<10;
+   PTD-> PCOR |= 1<<11;
+   delay_ms(2);
 
-                        // 1자리수 출력
-                        num(d1);
-                        PTD-> PCOR |= 1<<16;
-                        PTD-> PCOR |= 1<<15;
-                        PTD-> PCOR |= 1<<10;
-                        PTD-> PSOR |= 1<<11;
-                        delay_ms(2);
-                        }
+   // 1자리수 출력
+   num(d1);
+   PTD-> PCOR |= 1<<16;
+   PTD-> PCOR |= 1<<15;
+   PTD-> PCOR |= 1<<10;
+   PTD-> PSOR |= 1<<11;
+   delay_ms(2);
+   }
 }
 
 int main(void)

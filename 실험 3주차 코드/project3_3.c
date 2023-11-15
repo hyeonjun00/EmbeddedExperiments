@@ -54,15 +54,17 @@ int main(void)
 	SOSC_init_8MHz();       /* Initialize system oscilator for 8 MHz xtal */
 	SPLL_init_160MHz();     /* Initialize SPLL to 160 MHz with 8 MHz SOSC */
 	NormalRUNmode_80MHz();  /* Init clocks: 80 MHz sysclk & core, 40 MHz bus, 20 MHz flash */
-	  int Dtime = 0;
-	  Dtime = 500;
-		int arr[] = {0,1,2,3,5,6,7,10,0};
-		while(1) {
-			for(int i = 0;i < 8; i++){
-				PTD->PSOR |= 1<<arr[i];			/* turn OFF Port */
-				PTD->PCOR |= 1<<arr[i+1];		/* turn ON Port */
-				delay_ms(Dtime);
-			}
-			
+// input check하고  0 1 2 3 5 6 7 10 사용 
+	while(1){
+		int dtime = 0;
+		dtime = 500;
+		int arr[]={0,1,2,3,5,6,7,10};
+		for(int i;i<8;i++){
+			int next = (i+1)%8;
+			PTD->PSOR|=1<<arr[i];
+			PTD->PCOR|=1<<arr[next];
+			delay(dtime);
+		}
 	}
 }
+

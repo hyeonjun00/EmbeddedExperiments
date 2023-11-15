@@ -121,7 +121,7 @@ void Seg_out(int number){
 	num0= number%10;
 
 
-	// 1000??? ??
+	// 1000의 자리 출력
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num3];
@@ -129,7 +129,7 @@ void Seg_out(int number){
 	PTD->PCOR = 0xfff;
 	j++;
 
-	// 100??? ??
+	// 100의 자리 출력
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num2];
@@ -137,7 +137,7 @@ void Seg_out(int number){
 	    PTD->PCOR = 0xfff;
 	j++;
 
-	// 10??? ??
+	// 10의 자리 출력
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num1];
@@ -145,7 +145,7 @@ void Seg_out(int number){
    PTD->PCOR = 0xfff;
 	j++;
 
-	// 1??? ??
+	// 1의 자리 출력
 	PTD->PSOR = FND_SEL[j];
 	PTD->PCOR =0x7f;
 	PTD->PSOR = FND_DATA[num0];
